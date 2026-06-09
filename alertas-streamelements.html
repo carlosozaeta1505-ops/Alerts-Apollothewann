@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&display=swap');
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  width: 600px;
+  background: transparent;
+  overflow: hidden;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* ── ALERT CONTAINER ── */
+.alert {
+  position: relative;
+  width: 600px;
+  padding: 0;
+  opacity: 0;
+  transform: translateX(-40px);
+  animation: slidein 0.45s cubic-bezier(.22,.68,0,1.2) forwards;
+}
+
+@keyframes slidein {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ── SHARED CARD ── */
+.card {
+  position: relative;
+  overflow: hidden;
+  border-left: 4px solid var(--accent);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  gap: 0;
+  min-height: 90px;
+}
+
+/* animated top shine */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: shine 1.8s ease-out 0.4s forwards;
+}
+@keyframes shine {
+  0%   { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* scan line texture */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 3px,
+    rgba(0,0,0,0.07) 3px, rgba(0,0,0,0.07) 4px
+  );
+  pointer-events: none;
+}
+
+/* ── ICON BLOCK ── */
+.icon-block {
+  width: 90px;
+  min-height: 90px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  background: var(--icon-bg);
+  border-right: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── TEXT BLOCK ── */
+.text-block {
+  flex: 1;
+  padding: 14px 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.event-type {
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.event-type::before {
+  content: '';
+  display: inline-block;
+  width: 14px; height: 1px;
+  background: var(--accent);
+}
+
+.user-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  letter-spacing: 2px;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 4px;
+  animation: namepop 0.3s cubic-bezier(.22,.68,0,1.4) 0.5s both;
+}
+@keyframes namepop {
+  from { transform: scale(.85); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.message {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 1px;
+  line-height: 1.5;
+}
+
+/* ── ACCENT BAR RIGHT ── */
+.accent-bar {
+  width: 4px;
+  min-height: 90px;
+  background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+/* ══════════════════════════
+   FOLLOW ALERT  (green bio)
+   ══════════════════════════ */
+.follow-alert {
+  --accent:   #39ff7a;
+  --bg:       rgba(0, 18, 8, 0.97);
+  --icon-bg:  rgba(0, 30, 12, 0.9);
+}
+
+/* ══════════════════════════
+   SUB ALERT  (blood red)
+   ══════════════════════════ */
+.sub-alert {
+  --accent:   #c1121f;
+  --bg:       rgba(12, 0, 0, 0.97);
+  --icon-bg:  rgba(22, 0, 0, 0.9);
+}
+
+/* ══════════════════════════
+   BITS ALERT  (amber)
+   ══════════════════════════ */
+.bits-alert {
+  --accent:   #f5c842;
+  --bg:       rgba(14, 10, 0, 0.97);
+  --icon-bg:  rgba(22, 16, 0, 0.9);
+}
+
+/* ══════════════════════════
+   RAID ALERT  (full width special)
+   ══════════════════════════ */
+.raid-alert {
+  --accent:   #c1121f;
+  --bg:       rgba(10, 0, 0, 0.97);
+  --icon-bg:  rgba(20, 0, 0, 0.9);
+}
+
+.raid-alert .card {
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 120px;
+  border-left: none;
+  border-top: 3px solid var(--accent);
+}
+
+.raid-top {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex: 1;
+}
+
+.raid-bottom {
+  border-top: 1px solid rgba(193,18,31,0.2);
+  padding: 8px 18px 10px 108px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.raid-stat {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.3);
+}
+.raid-stat span {
+  color: var(--accent);
+  font-size: 14px;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 1px;
+  display: block;
+}
+
+/* ── BIOHAZARD pulse ── */
+.bio-pulse {
+  position: absolute;
+  top: 8px; right: 10px;
+  font-size: 13px;
+  color: var(--accent);
+  opacity: 0.35;
+  animation: biopulse 2s ease-in-out infinite;
+}
+@keyframes biopulse {
+  0%,100%{opacity:.35;transform:scale(1);}
+  50%{opacity:.7;transform:scale(1.15);}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════ -->
+<!-- 1. FOLLOW ALERT          -->
+<!-- ════════════════════════ -->
+<div class="alert follow-alert" id="follow">
+  <div class="card">
+    <div class="icon-block">🧟</div>
+    <div class="text-block">
+      <div class="event-type">Nuevo sobreviviente detectado</div>
+      <div class="user-name">{name}</div>
+      <div class="message">¡Bienvenido a Raccoon City, agente! 🐔☣</div>
+    </div>
+    <div class="accent-bar"></div>
+    <div class="bio-pulse">☣</div>
+  </div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 2. SUB ALERT             -->
+<!-- ════════════════════════ -->
+<div class="alert sub-alert" id="sub" style="display:none">
+  <div class="card">
+    <div class="icon-block">☣</div>
+    <div class="text-block">
+      <div class="event-type">¡Infectado por Umbrella!</div>
+      <div class="user-name">{name}</div>
+      <div class="message">Se unió al Proyecto Umbrella · {tier} 🐔</div>
+    </div>
+    <div class="accent-bar"></div>
+    <div class="bio-pulse">☣</div>
+  </div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 3. BITS ALERT            -->
+<!-- ════════════════════════ -->
+<div class="alert bits-alert" id="bits" style="display:none">
+  <div class="card">
+    <div class="icon-block">💎</div>
+    <div class="text-block">
+      <div class="event-type">¡Antídoto recibido!</div>
+      <div class="user-name">{name}</div>
+      <div class="message">{amount} bits — {message} 🐔</div>
+    </div>
+    <div class="accent-bar"></div>
+    <div class="bio-pulse">☣</div>
+  </div>
+</div>
+
+<!-- ════════════════════════ -->
+<!-- 4. RAID ALERT            -->
+<!-- ════════════════════════ -->
+<div class="alert raid-alert" id="raid" style="display:none">
+  <div class="card">
+    <div class="raid-top">
+      <div class="icon-block" style="font-size:44px">🚨</div>
+      <div class="text-block">
+        <div class="event-type">¡Raccoon City bajo ataque!</div>
+        <div class="user-name">{name}</div>
+        <div class="message">está raidando con su horda de zombies 🧟🐔</div>
+      </div>
+    </div>
+    <div class="raid-bottom">
+      <div class="raid-stat">
+        <span>{amount}</span>
+        RAIDERS
+      </div>
+      <div class="raid-stat" style="flex:1; letter-spacing:1px; font-size:11px;">
+        ¡El pollo activa el protocolo de emergencia!
+      </div>
+    </div>
+    <div class="bio-pulse">☣</div>
+  </div>
+</div>
+
+</body>
+</html>
